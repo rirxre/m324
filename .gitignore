@@ -1,0 +1,33 @@
+# Betriebssystem-spezifische Dateien
+.DS_Store
+Thumbs.db
+
+# Editor-/IDE-spezifische Dateien
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Log- und Debug-Dateien
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Umgebungsvariablen (falls sie außerhalb von backend/frontend liegen)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# Build- und Cache-Dateien (global)
+node_modules/
+dist/
+out/
+coverage/
+
+# Generierte Dateien
+*.cache
