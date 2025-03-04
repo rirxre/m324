@@ -5,7 +5,13 @@ const cors = require("cors");
 const TodoModel = require("./models/todoList");
 
 const app = express();
-app.use(cors());
+
+const cors = require('cors');
+app.use(cors({
+    origin: '*', // Falls nur das Frontend erlaubt sein soll, setze die Render-Frontend-URL hier ein
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;

@@ -1,0 +1,10 @@
+# Ignoriere node_modules für Backend & Frontend
+backend/node_modules/
+frontend/node_modules/
+
+# Ignoriere Umgebungsdateien
+backend/.env
+frontend/.env
+
+# Ignoriere Build-Ordner
+frontend/dist/
