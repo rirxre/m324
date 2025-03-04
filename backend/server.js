@@ -1,17 +1,18 @@
-require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const TodoModel = require("./models/todoList");
+import cors from 'cors';
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import TodoModel from "./models/todoList.js";
 
+dotenv.config();
 const app = express();
 
-const cors = require('cors');
 app.use(cors({
     origin: '*', // Falls nur das Frontend erlaubt sein soll, setze die Render-Frontend-URL hier ein
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type']
 }));
+
 app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
@@ -72,7 +73,6 @@ app.put("/updateTodoList/:id", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
-
 
 app.delete("/deleteTodoList/:id", async (req, res) => {
     try {
