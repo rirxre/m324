@@ -1,26 +1,44 @@
 import js from "@eslint/js";
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
+import babelParser from "@babel/eslint-parser";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
+  js.configs.recommended, // Standard ESLint-Regeln für JS
   {
-    // Backend: Gilt für alle Dateien im "backend"-Ordner
     files: ["backend/**/*.js"],
     languageOptions: {
-      sourceType: "commonjs",
-      globals: globals.node, // Setzt die Umgebung auf Node.js
+      sourceType: "module",
+      globals: globals.node,
     },
   },
   {
-    // Frontend: Gilt für alle Dateien im "frontend"-Ordner
     files: ["frontend/**/*.js", "frontend/**/*.jsx"],
     languageOptions: {
       sourceType: "module",
-      globals: globals.browser, // Setzt die Umgebung auf den Browser
+      parser: babelParser, // 🎯 Füge den richtigen Parser hinzu!
+      parserOptions: {
+        requireConfigFile: false,
+        babelOptions: {
+          presets: ["@babel/preset-react"], // 🎯 Unterstützt JSX
+        },
+      },
+      globals: globals.browser,
+    },
+    plugins: {
+      react,
+      "react-hooks": reactHooks,
+    },
+    rules: {
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
   },
-  js.configs.recommended, // Empfohlene ESLint-Regeln für JS
   {
-    ignores: ["node_modules/", "frontend/dist/"], // Verhindert Fehler im dist-Ordner
+    ignores: ["node_modules/", "frontend/dist/"], //Verhindert Fehler durch generierte Dateien
   },
 ];

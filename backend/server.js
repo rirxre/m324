@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:5174', 'https://m324-1.onrender.com'], // Lokales Frontend + Render Frontend erlauben
+    origin: ['http://localhost:5173', 'https://m324-1.onrender.com'], // Lokales Frontend + Render Frontend erlauben
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
@@ -53,6 +53,36 @@ app.post("/addTodoList", async (req, res) => {
         res.status(201).json(todo);
     } catch (err) {
         console.error("Error adding task:", err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 🔹 Update-Funktion für eine Aufgabe (PUT)
+app.put("/updateTodoList/:id", async (req, res) => {
+    try {
+        const updatedTask = await TodoModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+
+        if (!updatedTask) {
+            return res.status(404).json({ error: "Aufgabe nicht gefunden" });
+        }
+
+        res.json(updatedTask);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// 🔹 Löschen einer Aufgabe (DELETE)
+app.delete("/deleteTodoList/:id", async (req, res) => {
+    try {
+        const deletedTask = await TodoModel.findByIdAndDelete(req.params.id);
+
+        if (!deletedTask) {
+            return res.status(404).json({ error: "Aufgabe nicht gefunden" });
+        }
+
+        res.json({ message: "Aufgabe erfolgreich gelöscht" });
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
