@@ -5,12 +5,16 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "echo \"No tests aviailable\""
+    "test": "echo \"No tests aviailable\"",
+    "lint": "eslint ."
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.18.2",
     "mongoose": "^8.10.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.21.0"
   }
 }
