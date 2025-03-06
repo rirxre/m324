@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
     task: {
@@ -25,6 +25,6 @@ const todoSchema = new mongoose.Schema({
 });
 
 // Modell exportieren
-const todoList = mongoose.model("todo", todoSchema);
+const TodoModel = mongoose.model("todo", todoSchema);
 
-module.exports = todoList;
+export default TodoModel; // <-- Hier `export default` hinzugefügt

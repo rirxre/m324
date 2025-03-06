@@ -1,19 +1,15 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Todo from './components/Todo';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Todo from "./components/Todo.jsx"; // .jsx-Endung hinzugefügt
 
 function App() {
-  const headStyle = {
-    textAlign: "center",
-  };
-
   return (
     <div>
-      <h1 style={headStyle}>Todo List</h1>
+      <h1 className="text-center">Todo List</h1>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Todo />} />
+          <Route path="/" element={<Todo />} />
         </Routes>
       </BrowserRouter>
     </div>

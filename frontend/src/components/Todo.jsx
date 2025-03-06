@@ -7,13 +7,9 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 function Todo() {
   const [todoList, setTodoList] = useState([]);
-  const [editableId, setEditableId] = useState(null);
-  const [editedTask, setEditedTask] = useState("");
-  const [editedStatus, setEditedStatus] = useState("");
   const [newTask, setNewTask] = useState("");
   const [newStatus, setNewStatus] = useState("");
   const [newDeadline, setNewDeadline] = useState("");
-  const [editedDeadline, setEditedDeadline] = useState("");
 
   const statusOptions = [
     { label: "Offen", value: "open" },
