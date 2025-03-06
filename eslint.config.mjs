@@ -15,14 +15,14 @@ export default [
     },
   },
   {
-    files: ["frontend/**/*.js", "frontend/**/*.jsx"],
+    files: ["frontend/**/*.js", "frontend/**/*.jsx", "frontend/**/*.tsx", "frontend/**/*.ts"],
     languageOptions: {
       sourceType: "module",
-      parser: babelParser, // 🎯 Füge den richtigen Parser hinzu!
+      parser: babelParser, // 🎯 Richtiger Parser für JSX & TS
       parserOptions: {
         requireConfigFile: false,
         babelOptions: {
-          presets: ["@babel/preset-react"], // 🎯 Unterstützt JSX
+          presets: ["@babel/preset-react"], // 🎯 Unterstützt JSX & React
         },
       },
       globals: globals.browser,
@@ -39,6 +39,12 @@ export default [
     },
   },
   {
-    ignores: ["node_modules/", "frontend/dist/"], //Verhindert Fehler durch generierte Dateien
+    ignores: [
+      "node_modules/",
+      "frontend/dist/",
+      "frontend/build/",
+      "backend/dist/",
+      "backend/build/",
+    ], // Verhindert Fehler durch generierte Dateien
   },
 ];
