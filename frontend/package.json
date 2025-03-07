@@ -16,6 +16,7 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "test": "echo \"No tests available\" && exit 0",
     "lint": "eslint ."
   },
