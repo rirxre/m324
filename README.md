@@ -47,10 +47,6 @@ M324_Todo-List
 | **GitHub Actions** | Automatisierte Tests & Deployment |
 | **Render**    | Cloud-Hosting für Frontend & Backend |
 | **Bootstrap** | Styling für das Frontend |
----
-
-
-
 
 
 ## Installation & Start (Lokal)
@@ -68,7 +64,7 @@ cd m324
 
 
 ### 2 Dateien anlegen:
-Erstelle eine .env Datei für das Backend (backend/.env):
+Erstelle **Backend .env Datei (`backend/.env`):**
 ```env
 MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todoapp
 JWT_SECRET=geheimes_passwort
@@ -96,17 +92,17 @@ Danach ist die App erreichbar unter:
 ## Deployment auf Render
 Das Projekt wird automatisch bei Push auf main mit GitHub Actions deployed.
 
-- Backend Deployment
-Platform: Render
-Node.js Service: https://m324.onrender.com
+- **Backend Deployment**
+  - **Platform:** Render
+  - **Service:** [Backend auf Render](https://m324.onrender.com)
 
-- Frontend Deployment
-Platform: Render
-Static Site Service: https://m324-1.onrender.com
+- **Frontend Deployment**
+  - **Platform:** Render
+  - **Service:** [Frontend auf Render](https://m324-1.onrender.com)
 
----
 
-## CI/CD Pipeline (GitHub Actions)
+
+## CI/CD & Deployment
 Das Projekt verwendet GitHub Actions für eine automatisierte CI/CD Pipeline, die folgende Schritte umfasst:
 
 1. Linting & Tests
@@ -121,38 +117,10 @@ Das Projekt verwendet GitHub Actions für eine automatisierte CI/CD Pipeline, di
 - Frontend wird auf Render.com deployed
 
 Die Pipeline wird automatisch bei jedem Push in den main Branch ausgeführt.
-Datei: .github/workflows/deploy.yml
+Datei: [.github/workflows/deploy.yml](.github/workflows/deploy.yml)
 
-```yaml
-name: CI/CD Pipeline - Lint, Test, Build & Deploy
-on: push
-jobs:
-  ci_pipeline:
-    name: Code Linting & Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Backend-Tests
-        working-directory: backend
-        run: npm install && npm test || echo "Tests skipped"
-      - name: Frontend-Tests
-        working-directory: frontend
-        run: npm install && npm test || echo "Tests skipped"
-  deploy:
-    name: Deployment to Render
-    needs: ci_pipeline
-    runs-on: ubuntu-latest
-    steps:
-      - name: Backend deployen
-        run: curl -X POST "$RENDER_BACKEND_DEPLOY_HOOK"
-      - name: Frontend deployen
-        run: curl -X POST "$RENDER_FRONTEND_DEPLOY_HOOK"
-```
 
----
+
 ## Docker
 Falls du Docker nutzt, kannst du das Projekt mit Docker Compose starten.
 
@@ -176,7 +144,6 @@ docker-compose down
 | **PUT**  | `/updateTodoList/:id`    | ToDo bearbeiten               |
 | **DELETE** | `/deleteTodoList/:id`  | ToDo löschen                  |
 
----
 
 ## Autorinnen
 - Ceren Durukan
