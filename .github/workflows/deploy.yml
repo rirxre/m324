@@ -1,4 +1,4 @@
-name: CI/CD Pipeline - Lint, Test & Deploy
+name: CI/CD Pipeline - Lint, Test, Build & Deploy
 
 on:
   push:
@@ -45,9 +45,31 @@ jobs:
         working-directory: frontend
         run: npm test || echo "Frontend tests skipped"
 
+  build:
+    name: Build Frontend
+    needs: ci_pipeline
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Abhängigkeiten installieren
+        working-directory: frontend
+        run: npm install
+
+      - name: Frontend builden
+        working-directory: frontend
+        run: npm run build
+
   deploy:
     name: Deployment to Render
-    needs: ci_pipeline
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
