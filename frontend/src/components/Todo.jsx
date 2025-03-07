@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+// API_URL mit Fallback auf localhost setzen
+const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
 
 function Todo() {
   const [todoList, setTodoList] = useState([]);
@@ -25,51 +26,45 @@ function Todo() {
     fetchTasks();
   }, []);
 
-  const fetchTasks = () => {
-    axios
-      .get(`${API_URL}/getTodoList`)
-      .then((result) => {
-        setTodoList(result.data);
-      })
-      .catch((err) => {
-        console.error("Fehler beim Laden der ToDo-Liste:", err);
-        toast.error("Fehler beim Laden der ToDo-Liste!");
-      });
+  const fetchTasks = async () => {
+    try {
+      const result = await axios.get(`${API_URL}/getTodoList`);
+      setTodoList(result.data);
+    } catch (err) {
+      console.error("Fehler beim Laden der ToDo-Liste:", err.response || err.message);
+      toast.error("Fehler beim Laden der ToDo-Liste!");
+    }
   };
 
-  const addTask = (e) => {
+  const addTask = async (e) => {
     e.preventDefault();
     if (!newTask || !newStatus || !newDeadline) {
       toast.error("Alle Felder müssen ausgefüllt sein!");
       return;
     }
 
-    axios
-      .post(`${API_URL}/addTodoList`, { task: newTask, status: newStatus, deadline: newDeadline })
-      .then(() => {
-        toast.success("Aufgabe erfolgreich hinzugefügt!");
-        fetchTasks();
-        setNewTask("");
-        setNewStatus("");
-        setNewDeadline("");
-      })
-      .catch((err) => {
-        console.error("Fehler beim Hinzufügen:", err);
-        toast.error("Fehler beim Hinzufügen der Aufgabe!");
-      });
+    try {
+      await axios.post(`${API_URL}/addTodoList`, { task: newTask, status: newStatus, deadline: newDeadline });
+      toast.success("Aufgabe erfolgreich hinzugefügt!");
+      fetchTasks();
+      setNewTask("");
+      setNewStatus("");
+      setNewDeadline("");
+    } catch (err) {
+      console.error("Fehler beim Hinzufügen:", err.response || err.message);
+      toast.error("Fehler beim Hinzufügen der Aufgabe!");
+    }
   };
 
-  const deleteTask = (id) => {
-    axios
-      .delete(`${API_URL}/deleteTodoList/${id}`)
-      .then(() => {
-        toast.success("Aufgabe gelöscht!");
-        fetchTasks();
-      })
-      .catch((err) => {
-        console.error("Fehler beim Löschen:", err);
-        toast.error("Fehler beim Löschen der Aufgabe!");
-      });
+  const deleteTask = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/deleteTodoList/${id}`);
+      toast.success("Aufgabe gelöscht!");
+      fetchTasks();
+    } catch (err) {
+      console.error("Fehler beim Löschen:", err.response || err.message);
+      toast.error("Fehler beim Löschen der Aufgabe!");
+    }
   };
 
   const editTask = (task) => {
@@ -79,18 +74,16 @@ function Todo() {
     setEditedDeadline(task.deadline ? new Date(task.deadline).toISOString().slice(0, 16) : "");
   };
 
-  const saveTask = (id) => {
-    axios
-      .put(`${API_URL}/updateTodoList/${id}`, { task: editedTask, status: editedStatus, deadline: editedDeadline })
-      .then(() => {
-        toast.success("Aufgabe aktualisiert!");
-        setEditableId(null);
-        fetchTasks();
-      })
-      .catch((err) => {
-        console.error("Fehler beim Aktualisieren:", err);
-        toast.error("Fehler beim Aktualisieren der Aufgabe!");
-      });
+  const saveTask = async (id) => {
+    try {
+      await axios.put(`${API_URL}/updateTodoList/${id}`, { task: editedTask, status: editedStatus, deadline: editedDeadline });
+      toast.success("Aufgabe aktualisiert!");
+      setEditableId(null);
+      fetchTasks();
+    } catch (err) {
+      console.error("Fehler beim Aktualisieren:", err.response || err.message);
+      toast.error("Fehler beim Aktualisieren der Aufgabe!");
+    }
   };
 
   return (
@@ -130,7 +123,7 @@ function Todo() {
                       statusOptions.find((option) => option.value === task.status)?.label || task.status
                     )}
                   </td>
-                  <td>{new Date(task.deadline).toLocaleString()}</td>
+                  <td>{task.deadline ? new Date(task.deadline).toLocaleString() : "Kein Datum"}</td>
                   <td>
                     {editableId === task._id ? (
                       <button className="btn btn-success btn-sm" onClick={() => saveTask(task._id)}>Speichern</button>

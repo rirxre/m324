@@ -11,3 +11,6 @@ frontend/.env
 # Build-Verzeichnisse ignorieren
 dist/
 frontend/dist/
+
+# MongoDB Datenbank-Ordner ignorieren
+mongo_data/
