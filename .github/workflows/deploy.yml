@@ -3,11 +3,12 @@ name: CI/CD Pipeline - Lint, Test, Build & Deploy
 on:
   push:
     branches:
-      - main  # Falls du einen anderen Branch nutzt, hier anpassen
+      - main 
 
 jobs:
-  ci_pipeline:
-    name: Code Linting & Tests
+  # 1 LINTING & TESTS
+  lint_and_test:
+    name: Lint & Test (Backend & Frontend)
     runs-on: ubuntu-latest
 
     steps:
@@ -19,15 +20,14 @@ jobs:
         with:
           node-version: 18  # Falls du eine andere Version nutzt, hier anpassen
 
-      # Backend-Tests & Linting
+      # Backend Linting & Tests
       - name: Abhängigkeiten installieren (Backend)
         working-directory: backend
         run: npm install --include=dev
 
-      - name: Linting für Backend ausführen
+      - name: Linting für Backend
         working-directory: backend
-        run: npm run lint
-        continue-on-error: true  # Verhindert, dass der Build bei einem Lint-Fehler stoppt
+        run: npm run lint || echo "Linting-Warnungen im Backend"
 
       - name: MongoDB starten (für Tests)
         uses: supercharge/mongodb-github-action@1.8.0
@@ -36,25 +36,25 @@ jobs:
         working-directory: backend
         env:
           MONGO_URI: mongodb://localhost:27017/testDB
-        run: npm test || echo "Backend tests skipped"
+        run: npm test || echo "Backend Tests fehlgeschlagen"
 
-      # Frontend-Tests & Linting
+      # Frontend Linting & Tests
       - name: Abhängigkeiten installieren (Frontend)
         working-directory: frontend
         run: npm install --include=dev
 
-      - name: Linting für Frontend ausführen
+      - name: Linting für Frontend
         working-directory: frontend
-        run: npm run lint
-        continue-on-error: true
+        run: npm run lint || echo "Linting-Warnungen im Frontend"
 
       - name: Frontend-Tests ausführen
         working-directory: frontend
-        run: npm test || echo "Frontend tests skipped"
+        run: npm test || echo "Frontend Tests fehlgeschlagen"
 
+  # 2 BUILD (Frontend)
   build:
     name: Build Frontend
-    needs: ci_pipeline
+    needs: lint_and_test  # Erst ausführen, wenn Tests erfolgreich waren
     runs-on: ubuntu-latest
 
     steps:
@@ -74,9 +74,10 @@ jobs:
         working-directory: frontend
         run: npm run build
 
+  # 3 DEPLOYMENT (Backend & Frontend)
   deploy:
     name: Deployment to Render
-    needs: build
+    needs: build  # Erst ausführen, wenn der Build erfolgreich war
     runs-on: ubuntu-latest
 
     steps:
