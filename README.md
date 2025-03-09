@@ -52,9 +52,13 @@ M324_Todo-List
 ## Installation & Start (Lokal)
 
 ### Voraussetzungen:
-- Docker
-- Node.js
-- Git
+- **Docker** (für containerisierte Ausführung)  
+- **Node.js (>= 18)** (zur Entwicklung & lokalen Ausführung)  
+- **npm (>= 9)** (für Abhängigkeitsverwaltung)  
+- **MongoDB Atlas oder lokale MongoDB** (Datenbank für die Anwendung)  
+- **Git** (zum Klonen des Repositorys)  
+- **.env Dateien manuell anlegen (siehe unten)**
+
 
 ### 1️ Repository klonen:
 ```sh
@@ -102,19 +106,21 @@ Das Projekt wird automatisch bei Push auf main mit GitHub Actions deployed.
 
 
 
-## CI/CD & Deployment
-Das Projekt verwendet GitHub Actions für eine automatisierte CI/CD Pipeline, die folgende Schritte umfasst:
+## CI/CD Pipeline (GitHub Actions)
+Diese Anwendung nutzt **GitHub Actions**, um automatisch Tests auszuführen, das Frontend zu bauen und anschließend das Deployment zu starten.  
 
-1. Linting & Tests
-- Prüft Code-Qualität mit ESLint
-- Führt Unit-Tests aus (falls vorhanden)
+**Pipeline-Stages:**
+1. **Linting & Tests**
+- Führt **ESLint-Prüfungen** durch  
+- Falls vorhanden, werden **Unit-Tests für Frontend & Backend** ausgeführt  
 
-2. Build-Prozess
-- Baut das React-Frontend
+2. **Build-Stage**
+- Baut das **React-Frontend**  
+- Bereitet das Backend für Deployment vor  
 
-3. Deployment zu Render
-- Backend wird auf Render.com deployed
-- Frontend wird auf Render.com deployed
+3. **Deployment-Stufe**
+- **Backend wird auf Render hochgeladen**  
+- **Frontend wird auf Render hochgeladen** 
 
 Die Pipeline wird automatisch bei jedem Push in den main Branch ausgeführt.
 Datei: [.github/workflows/deploy.yml](.github/workflows/deploy.yml)
@@ -143,6 +149,39 @@ docker-compose down
 | **POST** | `/addTodoList`           | Neues ToDo hinzufügen         |
 | **PUT**  | `/updateTodoList/:id`    | ToDo bearbeiten               |
 | **DELETE** | `/deleteTodoList/:id`  | ToDo löschen                  |
+
+
+## Unit-Tests
+Es wurden **10 Unit-Tests** mit Jest für das Backend implementiert.  
+Die Tests überprüfen u. a.:
+- Speicherung von Aufgaben
+- Abruf und Bearbeitung von Aufgaben
+- Validierung von Daten
+- Löschung einzelner und aller Aufgaben
+
+Die Tests können mit folgendem Befehl ausgeführt werden:
+```sh
+npm test
+```
+
+
+## Zusatzleistungen
+Dieses Projekt enthält zusätzliche Funktionen, die über die Basisanforderungen hinausgehen:
+
+**CI/CD Deployment mit GitHub Actions**  
+- Automatisierte Tests, Linting und Deployment zu Render.com  
+
+**Einsatz von Docker & Containerisierung**  
+- Alle Komponenten laufen in Containern, bereitgestellt über `docker-compose`  
+
+**Feature-Branching & Pull Requests**  
+- Änderungen werden über Branches verwaltet, um bessere Code-Qualität sicherzustellen  
+
+**Pipeline-Stages für Linting, Tests, Build & Deployment**  
+- Frontend wird automatisch gebaut & Backend wird automatisch deployt  
+
+
+
 
 
 ## Autorinnen

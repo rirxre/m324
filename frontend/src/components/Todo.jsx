@@ -4,7 +4,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // API_URL mit Fallback auf localhost setzen
-const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
+//const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3001";
+const API_URL = typeof import.meta !== "undefined" ? import.meta.env.VITE_BACKEND_URL : process.env.VITE_BACKEND_URL || "http://localhost:3001";
+
 
 function Todo() {
   const [todoList, setTodoList] = useState([]);
