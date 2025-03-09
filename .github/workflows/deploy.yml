@@ -8,7 +8,7 @@ on:
 jobs:
   # 1 LINTING & TESTS
   lint_and_test:
-    name: Lint & Test (Backend & Frontend)
+    name: Lint & Test
     runs-on: ubuntu-latest
 
     steps:
